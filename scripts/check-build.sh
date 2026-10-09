@@ -36,7 +36,9 @@ sh -n "$INCLUDE/etc/skel/.profile" || fail 'Invalid login profile'
 TEMP=$(mktemp -d)
 trap 'rm -rf "$TEMP"' EXIT HUP INT TERM
 chmod 0700 "$TEMP"
-XDG_RUNTIME_DIR="$TEMP" sway -C -c "$INCLUDE/etc/sway/config" || fail 'Invalid Sway config'
+rsvg-convert -w 1920 -h 1080 -o "$TEMP/wallpaper.png" "$ROOT/art/wallpaper.svg"
+sed "s@/usr/share/wadkos/wallpaper.png@$TEMP/wallpaper.png@g" "$INCLUDE/etc/sway/config" > "$TEMP/sway.conf"
+XDG_RUNTIME_DIR="$TEMP" WLR_BACKENDS=headless WLR_RENDERER=pixman sway -C -c "$TEMP/sway.conf" || fail 'Invalid Sway config'
 fc-match -f '%{family}\n' 'Noto Sans Arabic' | grep -q 'Noto Sans Arabic' || fail 'Noto Sans Arabic is unavailable on build host'
 fc-match -f '%{family}\n' 'Noto Sans' | grep -q 'Noto Sans' || fail 'Noto Sans is unavailable on build host'
 [ -z "$(find "$ROOT" -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname '*.woff*' \) -print -quit)" ] || fail 'Font file embedded in source tree'
