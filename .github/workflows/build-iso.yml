@@ -49,6 +49,17 @@ jobs:
       - name: UEFI QEMU boot smoke test
         run: |
           sh scripts/test-qemu-boot.sh
+      - name: Upload QEMU boot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WadkOS-Developer-Preview-0.1-qemu-evidence
+          path: |
+            dist/qemu-boot.log
+            dist/qemu-boot-screen.ppm
+            dist/qemu-screen.ppm
+          if-no-files-found: warn
+          retention-days: 14
       - name: Upload failure logs
         if: failure()
         uses: actions/upload-artifact@v4
@@ -58,6 +69,7 @@ jobs:
             dist/action.log
             dist/build.log
             dist/qemu-boot.log
+            dist/qemu-boot-screen.ppm
             dist/qemu-screen.ppm
           if-no-files-found: warn
           retention-days: 14
