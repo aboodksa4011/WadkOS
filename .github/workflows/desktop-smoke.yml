@@ -1,0 +1,78 @@
+name: WadkOS desktop smoke test
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Build workflow run ID containing the ISO artifact
+        required: true
+        type: string
+permissions:
+  actions: read
+  contents: read
+jobs:
+  desktop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: WadkOS-Developer-Preview-0.1-amd64
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: dist
+      - name: Install QEMU and OVMF
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 ovmf
+      - name: Verify downloaded ISO
+        run: |
+          test -s dist/WadkOS-Developer-Preview-0.1-amd64.iso
+          cd dist
+          sha256sum -c WadkOS-Developer-Preview-0.1-amd64.iso.sha256
+      - name: Open Wadk desktop applications in UEFI QEMU
+        run: |
+          set -eu
+          cp /usr/share/OVMF/OVMF_VARS_4M.fd dist/OVMF_VARS.fd
+          set +e
+          {
+            sleep 180
+            printf 'screendump dist/desktop.ppm\n'
+            printf 'sendkey meta_l-e\n'
+            sleep 12
+            printf 'screendump dist/files.ppm\n'
+            printf 'sendkey meta_l-shift-q\n'
+            sleep 3
+            printf 'sendkey meta_l-ret\n'
+            sleep 12
+            printf 'screendump dist/terminal.ppm\n'
+            printf 'sendkey meta_l-shift-q\n'
+            sleep 3
+            printf 'sendkey meta_l-shift-s\n'
+            sleep 12
+            printf 'screendump dist/settings.ppm\n'
+            printf 'sendkey meta_l-shift-q\n'
+            sleep 3
+            printf 'sendkey meta_l-shift-m\n'
+            sleep 20
+            printf 'screendump dist/monitor.ppm\n'
+            printf 'quit\n'
+          } | timeout -k 10 320 qemu-system-x86_64 -machine q35,accel=kvm:tcg -cpu max -m 3072 -smp 2 \
+            -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd \
+            -drive if=pflash,format=raw,file=dist/OVMF_VARS.fd \
+            -cdrom dist/WadkOS-Developer-Preview-0.1-amd64.iso -boot d \
+            -display none -vga std -serial file:dist/desktop-boot.log -monitor stdio -no-reboot
+          status=$?
+          set -e
+          test "$status" -eq 0
+          for name in desktop files terminal settings monitor; do test -s "dist/$name.ppm"; done
+          grep -q 'Linux version' dist/desktop-boot.log
+      - name: Upload application screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WadkOS-Developer-Preview-0.1-app-smoke
+          path: |
+            dist/*.ppm
+            dist/desktop-boot.log
+          if-no-files-found: warn
+          retention-days: 14
