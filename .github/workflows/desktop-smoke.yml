@@ -45,6 +45,23 @@ jobs:
             printf 'sendkey meta_l-ret\n'
             sleep 12
             printf 'screendump dist/terminal.ppm\n'
+            python3 - <<'PY'
+          import sys, time
+          commands = (
+              'systemctl is-active graphical.target NetworkManager.service',
+              'systemctl --user is-active pipewire.service',
+          )
+          keys = {' ': 'spc', '-': 'minus', '.': 'dot'}
+          for command in commands:
+              for character in command:
+                  key = keys.get(character, 'shift-' + character.lower() if character.isupper() else character)
+                  print('sendkey ' + key, flush=True)
+                  time.sleep(0.12)
+              print('sendkey ret', flush=True)
+              time.sleep(2)
+          PY
+            sleep 5
+            printf 'screendump dist/services.ppm\n'
             printf 'sendkey meta_l-shift-q\n'
             sleep 3
             printf 'sendkey meta_l-shift-s\n'
@@ -56,7 +73,7 @@ jobs:
             sleep 60
             printf 'screendump dist/monitor.ppm\n'
             printf 'quit\n'
-          } | timeout -k 10 320 qemu-system-x86_64 -machine q35,accel=kvm:tcg -cpu max -m 3072 -smp 2 \
+          } | timeout -k 10 400 qemu-system-x86_64 -machine q35,accel=kvm:tcg -cpu max -m 3072 -smp 2 \
             -drive if=pflash,format=raw,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd \
             -drive if=pflash,format=raw,file=dist/OVMF_VARS.fd \
             -cdrom dist/WadkOS-Developer-Preview-0.1-amd64.iso -boot d \
@@ -64,7 +81,7 @@ jobs:
           status=$?
           set -e
           test "$status" -eq 0
-          for name in desktop files terminal settings monitor; do test -s "dist/$name.ppm"; done
+          for name in desktop files terminal services settings monitor; do test -s "dist/$name.ppm"; done
           grep -q 'Linux version' dist/desktop-boot.log
           python3 - <<'PY'
           from pathlib import Path
