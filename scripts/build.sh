@@ -17,6 +17,8 @@ cd "$BUILD"
 sh "$ROOT/scripts/configure.sh"
 
 cp -a "$ROOT/live/config/." "$BUILD/config/"
+mkdir -p "$BUILD/config/bootloaders/grub-pc"
+rsvg-convert -w 800 -h 600 -o "$BUILD/config/bootloaders/grub-pc/wadk-boot.png" "$ROOT/art/grub-background.svg"
 mkdir -p "$BUILD/config/includes.chroot/usr/share/plymouth/themes/wadk" "$BUILD/config/includes.chroot/usr/share/wadkos"
 rsvg-convert -w 1920 -h 1080 -o "$BUILD/config/includes.chroot/usr/share/plymouth/themes/wadk/background.png" "$ROOT/art/boot-background.svg"
 rsvg-convert -w 950 -h 250 -o "$BUILD/config/includes.chroot/usr/share/plymouth/themes/wadk/logo.png" "$ROOT/art/boot-logo.svg"

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1521"/><stop offset="1" stop-color="#16384a"/></linearGradient></defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <circle cx="690" cy="455" r="235" fill="none" stroke="#2a6e8b" stroke-opacity=".3" stroke-width="2"/>
+  <path d="M66 37 89 74 66 111 43 74Z" fill="none" stroke="#65dbf4" stroke-width="5"/>
+  <text x="112" y="80" fill="#e6f5fc" font-family="Noto Sans" font-size="48" font-weight="700">WadkOS</text>
+  <text x="114" y="108" fill="#73c9e3" font-family="Noto Sans" font-size="17">Wadk Boot · by BODKA</text>
+  <text x="44" y="564" fill="#a6c8d8" font-family="Noto Sans" font-size="15">Developer Preview 0.1 · Debian 13 Stable</text>
+</svg>

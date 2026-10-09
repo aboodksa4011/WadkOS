@@ -13,13 +13,14 @@ for file in \
     "$ROOT/scripts/test-qemu.sh" "$ROOT/scripts/test-qemu-boot.sh" \
     "$ROOT/live/config/package-lists/wadkos.list.chroot" \
     "$ROOT/live/config/bootloaders/grub-pc/config.cfg" \
+    "$ROOT/live/config/bootloaders/grub-pc/theme.cfg" \
     "$ROOT/live/config/hooks/live/010-wadkos.hook.chroot" \
     "$INCLUDE/etc/sway/config" "$INCLUDE/etc/xdg/waybar/config.jsonc" \
     "$INCLUDE/etc/skel/.profile" "$INCLUDE/usr/local/bin/wadk-session" \
     "$INCLUDE/usr/local/bin/wadk-settings" "$INCLUDE/usr/local/bin/wadk-files" \
     "$INCLUDE/usr/local/bin/wadk-terminal" "$INCLUDE/usr/local/bin/wadk-monitor" \
     "$INCLUDE/usr/share/plymouth/themes/wadk/wadk.plymouth" \
-    "$ROOT/art/boot-background.svg" "$ROOT/art/boot-logo.svg" "$ROOT/art/wallpaper.svg"; do
+    "$ROOT/art/boot-background.svg" "$ROOT/art/boot-logo.svg" "$ROOT/art/grub-background.svg" "$ROOT/art/wallpaper.svg"; do
     [ -s "$file" ] || fail "Missing or empty file: $file"
 done
 
@@ -64,6 +65,8 @@ packages = (root / 'live/config/package-lists/wadkos.list.chroot').read_text()
 assert 'fonts-noto-core' in packages and 'linux-image-amd64' in packages
 grub = (root / 'live/config/bootloaders/grub-pc/config.cfg').read_text()
 assert 'set default=0' in grub and 'set timeout=5' in grub
+theme = (root / 'live/config/bootloaders/grub-pc/theme.cfg').read_text()
+assert 'wadk-boot.png' in theme and 'background_image' in theme
 for entry in (inc / 'usr/share/applications').glob('wadk-*.desktop'):
     command = next(line[5:].split()[0] for line in entry.read_text().splitlines() if line.startswith('Exec='))
     assert (inc / 'usr/local/bin' / command).is_file(), (entry, command)
