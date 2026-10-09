@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=WadkOS Desktop
+Name[ar]=سطح مكتب WadkOS
+Comment=WadkOS Wayland session by BODKA
+Exec=/usr/local/bin/wadk-session
+Type=Application
+DesktopNames=WadkOS

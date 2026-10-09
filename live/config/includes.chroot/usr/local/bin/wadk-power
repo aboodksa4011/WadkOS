@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+import subprocess
+
+Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
+
+dialog = Gtk.Dialog(title='طاقة WadkOS')
+dialog.set_default_size(320, 120)
+dialog.set_direction(Gtk.TextDirection.RTL)
+box = dialog.get_content_area()
+box.set_spacing(8)
+for label, command in [('قفل الشاشة', ['swaylock']), ('تسجيل الخروج', ['swaymsg', 'exit']), ('إعادة التشغيل', ['systemctl', 'reboot']), ('إيقاف التشغيل', ['systemctl', 'poweroff'])]:
+    button = Gtk.Button(label=label)
+    button.connect('clicked', lambda _button, cmd=command: (subprocess.Popen(cmd), dialog.response(Gtk.ResponseType.CLOSE)))
+    box.pack_start(button, False, False, 0)
+dialog.show_all()
+dialog.run()
+dialog.destroy()

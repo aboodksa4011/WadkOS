@@ -1,0 +1,23 @@
+#!/bin/sh
+set -eu
+locale-gen ar_SA.UTF-8 en_US.UTF-8
+update-locale LANG=ar_SA.UTF-8 LANGUAGE=ar_SA:ar
+chmod 0755 /usr/local/bin/wadk-*
+plymouth-set-default-theme wadk
+update-initramfs -u -k all
+systemctl enable NetworkManager.service
+systemctl enable bluetooth.service
+systemctl set-default graphical.target
+cat > /usr/lib/os-release <<'EOF'
+PRETTY_NAME="WadkOS Developer Preview 0.1"
+NAME="WadkOS"
+VERSION_ID="0.1"
+VERSION="Developer Preview 0.1"
+ID=wadkos
+ID_LIKE=debian
+EOF
+cat > /etc/dpkg/origins/wadkos <<'EOF'
+Vendor: WadkOS
+Parent: Debian
+EOF
+ln -sfn wadkos /etc/dpkg/origins/default

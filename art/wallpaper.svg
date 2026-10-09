@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1521"/><stop offset="1" stop-color="#16384a"/></linearGradient></defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <g stroke="#57a5bd" stroke-opacity=".11" stroke-width="1">
+    <path d="M80 0v1080 M160 0v1080 M240 0v1080 M320 0v1080 M400 0v1080 M480 0v1080 M560 0v1080 M640 0v1080 M720 0v1080 M800 0v1080 M880 0v1080 M960 0v1080 M1040 0v1080 M1120 0v1080 M1200 0v1080 M1280 0v1080 M1360 0v1080 M1440 0v1080 M1520 0v1080 M1600 0v1080 M1680 0v1080 M1760 0v1080 M1840 0v1080"/>
+    <path d="M0 80h1920 M0 160h1920 M0 240h1920 M0 320h1920 M0 400h1920 M0 480h1920 M0 560h1920 M0 640h1920 M0 720h1920 M0 800h1920 M0 880h1920 M0 960h1920 M0 1040h1920"/>
+  </g>
+  <path d="M1450 210 1610 470 1450 730 1290 470Z" fill="none" stroke="#64d9f3" stroke-width="10"/>
+  <path d="M1450 210v520" stroke="#64d9f3" stroke-opacity=".45" stroke-width="3"/>
+  <text x="120" y="520" fill="#e6f5fc" font-family="Noto Sans" font-size="112" font-weight="700">WadkOS</text>
+  <text x="125" y="590" fill="#73c9e3" font-family="Noto Sans" font-size="32">DEVELOPER PREVIEW 0.1</text>
+  <text x="125" y="650" fill="#b7d1dc" font-family="Noto Sans" font-size="30">by BODKA</text>
+</svg>

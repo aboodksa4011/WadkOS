@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Wadk Settings
+Name[ar]=إعدادات Wadk
+Comment=WadkOS settings hub
+Exec=wadk-settings
+Icon=preferences-system
+Terminal=false
+Categories=Settings;System;

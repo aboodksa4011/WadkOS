@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Wadk Files
+Name[ar]=ملفات Wadk
+Exec=wadk-files
+Icon=system-file-manager
+Terminal=false
+Categories=System;FileManager;

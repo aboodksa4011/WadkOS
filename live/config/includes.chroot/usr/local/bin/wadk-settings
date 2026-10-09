@@ -1,0 +1,66 @@
+#!/usr/bin/python3
+"""Small working WadkOS settings hub. Controls open system settings tools."""
+import subprocess
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk, Gio
+
+Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
+
+
+class Settings(Gtk.Window):
+    def __init__(self):
+        super().__init__(title='إعدادات WadkOS')
+        self.set_default_size(620, 440)
+        self.set_border_width(24)
+        self.set_direction(Gtk.TextDirection.RTL)
+        outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=14)
+        self.add(outer)
+        title = Gtk.Label(label='إعدادات WadkOS')
+        title.set_xalign(0)
+        title.get_style_context().add_class('title')
+        outer.pack_start(title, False, False, 0)
+        description = Gtk.Label(label='اضبط الشاشة والشبكة والصوت والمظهر من أدوات النظام.')
+        description.set_xalign(0)
+        outer.pack_start(description, False, False, 0)
+
+        grid = Gtk.Grid(column_spacing=12, row_spacing=12)
+        outer.pack_start(grid, True, True, 10)
+        actions = [
+            ('الشاشات', 'الدقة وترتيب الشاشات', ['wdisplays']),
+            ('الشبكة', 'الاتصالات والشبكات اللاسلكية', ['nm-connection-editor']),
+            ('الصوت', 'مستوى الصوت والأجهزة', ['pavucontrol']),
+            ('البلوتوث', 'الأجهزة المقترنة', ['blueman-manager']),
+            ('الملفات', 'افتح مدير الملفات', ['wadk-files']),
+            ('مراقبة النظام', 'العمليات والموارد', ['wadk-monitor']),
+        ]
+        for index, (name, detail, command) in enumerate(actions):
+            button = Gtk.Button(label=f'{name}\n{detail}')
+            button.set_size_request(250, 70)
+            button.connect('clicked', self.launch, command)
+            grid.attach(button, index % 2, index // 2, 1, 1)
+
+        theme_row = Gtk.Box(spacing=10)
+        theme_row.pack_start(Gtk.Label(label='المظهر الداكن'), False, False, 0)
+        switch = Gtk.Switch()
+        settings = Gio.Settings.new('org.gnome.desktop.interface')
+        switch.set_active(settings.get_string('color-scheme') == 'prefer-dark')
+        switch.connect('notify::active', lambda widget, _property: settings.set_string('color-scheme', 'prefer-dark' if widget.get_active() else 'default'))
+        theme_row.pack_start(switch, False, False, 0)
+        outer.pack_start(theme_row, False, False, 0)
+
+    def launch(self, _button, command):
+        try:
+            subprocess.Popen(command)
+        except OSError as error:
+            dialog = Gtk.MessageDialog(transient_for=self, flags=0, message_type=Gtk.MessageType.ERROR,
+                                       buttons=Gtk.ButtonsType.CLOSE, text='تعذر فتح الإعداد')
+            dialog.format_secondary_text(str(error))
+            dialog.run()
+            dialog.destroy()
+
+
+window = Settings()
+window.connect('destroy', Gtk.main_quit)
+window.show_all()
+Gtk.main()

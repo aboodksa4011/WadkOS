@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Wadk Terminal
+Name[ar]=طرفية Wadk
+Exec=wadk-terminal
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;

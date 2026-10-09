@@ -1,0 +1,5 @@
+window { background-color: #101b27; color: #e8f1f6; border: 2px solid #1783a9; border-radius: 10px; font-family: "Noto Sans Arabic"; }
+#input { background-color: #1b3040; color: #ffffff; border: 0; margin: 8px; padding: 8px; }
+#inner-box { margin: 8px; }
+#entry { padding: 7px; }
+#entry:selected { background-color: #175f7c; }

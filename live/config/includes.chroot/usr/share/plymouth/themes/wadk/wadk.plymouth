@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Wadk Boot
+Description=WadkOS boot screen by BODKA
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/wadk
+ScriptFile=/usr/share/plymouth/themes/wadk/wadk.script

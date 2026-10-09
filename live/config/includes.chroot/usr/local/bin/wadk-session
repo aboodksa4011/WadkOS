@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+export XDG_CURRENT_DESKTOP=WadkOS
+export XDG_SESSION_DESKTOP=wadkos
+export XDG_SESSION_TYPE=wayland
+export GTK_USE_PORTAL=1
+export LANG=ar_SA.UTF-8
+export LANGUAGE=ar_SA:ar
+export QT_QPA_PLATFORM=wayland
+export MOZ_ENABLE_WAYLAND=1
+exec dbus-run-session sway --config /etc/sway/config

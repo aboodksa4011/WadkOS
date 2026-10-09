@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Wadk Monitor
+Name[ar]=مراقب Wadk
+Exec=wadk-monitor
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;Monitor;

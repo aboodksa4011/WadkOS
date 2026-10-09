@@ -1,0 +1,8 @@
+* { font-family: "Noto Sans Arabic", sans-serif; font-size: 12px; }
+window#waybar { background: rgba(12, 20, 29, 0.96); color: #e7f1f6; border-bottom: 1px solid #264657; }
+#custom-wadk { color: #73d8ef; font-weight: bold; font-size: 15px; padding: 0 17px; }
+#workspaces button { color: #7d9dad; padding: 0 6px; }
+#workspaces button.focused { color: #ffffff; background: #126987; border-radius: 6px; }
+#clock, #network, #pulseaudio, #battery, #tray, #custom-files, #custom-terminal, #custom-settings, #custom-monitor, #custom-power { padding: 0 7px; }
+#custom-files:hover, #custom-terminal:hover, #custom-settings:hover, #custom-monitor:hover, #custom-power:hover { background: #1d5067; }
+#custom-power { color: #ffa99e; padding-right: 15px; }

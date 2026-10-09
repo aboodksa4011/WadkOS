@@ -1,0 +1,57 @@
+name: Build WadkOS ISO
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'live/**'
+      - 'scripts/build.sh'
+      - '.github/workflows/build-iso.yml'
+jobs:
+  iso:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build on Debian trixie
+        run: |
+          mkdir -p dist
+          docker run --rm --privileged -v "$PWD:/src" -w /src debian:trixie sh -ceu '
+            sed -i "s/^Components: main$/Components: main contrib non-free-firmware/" /etc/apt/sources.list.d/debian.sources
+            apt-get update
+            apt-get install -y live-build debootstrap debian-archive-keyring xorriso squashfs-tools grub-pc-bin grub-efi-amd64-bin mtools dosfstools shellcheck sway desktop-file-utils librsvg2-bin fonts-noto-core fontconfig python3
+            sh ./scripts/check-build.sh
+            sh ./scripts/build.sh
+          ' > dist/action.log 2>&1 || { tail -n 120 dist/action.log; exit 1; }
+          tail -n 20 dist/action.log
+      - name: Verify ISO and checksum
+        run: |
+          test -s dist/WadkOS-Developer-Preview-0.1-amd64.iso
+          cd dist
+          sha256sum -c WadkOS-Developer-Preview-0.1-amd64.iso.sha256
+          file WadkOS-Developer-Preview-0.1-amd64.iso
+      - name: UEFI QEMU boot smoke test
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 ovmf
+          sh scripts/test-qemu-boot.sh
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: WadkOS-Developer-Preview-0.1-amd64
+          path: |
+            dist/*.iso
+            dist/*.sha256
+            dist/build.log
+            dist/qemu-boot.log
+          retention-days: 14
+      - name: Upload failure logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WadkOS-Developer-Preview-0.1-build-failure
+          path: |
+            dist/action.log
+            dist/build.log
+            dist/qemu-boot.log
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,14 @@
+/build/
+/dist/
+*.iso
+*.log
+*.sha256
+__pycache__/
+*.pyc
+.env
+.env.*
+*.key
+*.pem
+*.p12
+.vscode/
+.DS_Store

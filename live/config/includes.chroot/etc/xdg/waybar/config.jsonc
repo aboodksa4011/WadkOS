@@ -1,0 +1,21 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 38,
+  "spacing": 10,
+  "modules-left": ["network", "pulseaudio", "battery", "tray"],
+  "modules-center": ["clock"],
+  "modules-right": ["custom/power", "custom/monitor", "custom/settings", "custom/terminal", "custom/files", "sway/workspaces", "custom/wadk"],
+  "custom/wadk": {"format": "◆ WadkOS", "on-click": "wofi --show drun --allow-images", "tooltip": "قائمة التطبيقات"},
+  "sway/workspaces": {"disable-scroll": true, "all-outputs": true},
+  "clock": {"format": "{:%A، %d %B  %H:%M}", "tooltip-format": "{:%Y-%m-%d}"},
+  "network": {"format-wifi": "شبكة {essid}", "format-ethernet": "سلكي", "format-disconnected": "غير متصل", "on-click": "nm-connection-editor"},
+  "pulseaudio": {"format": "صوت {volume}%", "format-muted": "صامت", "on-click": "pavucontrol"},
+  "battery": {"format": "بطارية {capacity}%", "format-charging": "شحن {capacity}%"},
+  "tray": {"spacing": 8},
+  "custom/files": {"format": "الملفات", "on-click": "wadk-files"},
+  "custom/terminal": {"format": "الطرفية", "on-click": "wadk-terminal"},
+  "custom/settings": {"format": "الإعدادات", "on-click": "wadk-settings"},
+  "custom/monitor": {"format": "المراقبة", "on-click": "wadk-monitor"},
+  "custom/power": {"format": "⏻", "on-click": "wadk-power", "tooltip": "الطاقة"}
+}
