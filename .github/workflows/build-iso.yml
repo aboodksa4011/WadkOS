@@ -28,12 +28,11 @@ jobs:
           test -s dist/WadkOS-Developer-Preview-0.1-amd64.iso
           cd dist
           sha256sum -c WadkOS-Developer-Preview-0.1-amd64.iso.sha256
+          cat WadkOS-Developer-Preview-0.1-amd64.iso.sha256
+          ls -lh WadkOS-Developer-Preview-0.1-amd64.iso
           file WadkOS-Developer-Preview-0.1-amd64.iso
-      - name: UEFI QEMU boot smoke test
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y qemu-system-x86 ovmf
-          sh scripts/test-qemu-boot.sh
+          xorriso -indev WadkOS-Developer-Preview-0.1-amd64.iso -report_el_torito plain
+          xorriso -indev WadkOS-Developer-Preview-0.1-amd64.iso -find / -name grub.cfg -print
       - name: Upload ISO
         uses: actions/upload-artifact@v4
         with:
@@ -44,6 +43,11 @@ jobs:
             dist/build.log
             dist/qemu-boot.log
           retention-days: 14
+      - name: UEFI QEMU boot smoke test
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 ovmf
+          sh scripts/test-qemu-boot.sh
       - name: Upload failure logs
         if: failure()
         uses: actions/upload-artifact@v4
@@ -53,5 +57,6 @@ jobs:
             dist/action.log
             dist/build.log
             dist/qemu-boot.log
+            dist/qemu-screen.ppm
           if-no-files-found: warn
           retention-days: 14
