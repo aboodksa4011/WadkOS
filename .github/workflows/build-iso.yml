@@ -36,7 +36,6 @@ jobs:
           ls -lh WadkOS-Developer-Preview-0.1-amd64.iso
           file WadkOS-Developer-Preview-0.1-amd64.iso
           xorriso -indev WadkOS-Developer-Preview-0.1-amd64.iso -report_el_torito plain
-          xorriso -indev WadkOS-Developer-Preview-0.1-amd64.iso -find / -name grub.cfg -print
       - name: Upload ISO
         uses: actions/upload-artifact@v4
         with:
