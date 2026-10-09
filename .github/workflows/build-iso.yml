@@ -15,7 +15,7 @@ jobs:
       - name: Build on Debian trixie
         run: |
           mkdir -p dist
-          docker run --rm --privileged -v "$PWD:/src" -w /src debian:trixie sh -ceu '
+          docker run --rm --privileged -v "$PWD:/src" -w /src public.ecr.aws/docker/library/debian:trixie sh -ceu '
             sed -i "s/^Components: main$/Components: main contrib non-free-firmware/" /etc/apt/sources.list.d/debian.sources
             apt-get update
             apt-get install -y live-build debootstrap debian-archive-keyring xorriso squashfs-tools grub-pc-bin grub-efi-amd64-bin mtools dosfstools shellcheck sway desktop-file-utils librsvg2-bin fonts-noto-core fontconfig python3

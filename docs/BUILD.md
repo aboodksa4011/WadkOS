@@ -5,7 +5,7 @@ The build is intentionally pinned to Debian **trixie** rather than the moving `s
 On Windows with Docker Desktop available, run from a PowerShell prompt in this directory:
 
 ```powershell
-docker run --rm --privileged -v "${PWD}:/src" -w /src debian:trixie sh -c "sed -i 's/^Components: main$/Components: main contrib non-free-firmware/' /etc/apt/sources.list.d/debian.sources && apt-get update && apt-get install -y live-build debootstrap debian-archive-keyring xorriso squashfs-tools grub-pc-bin grub-efi-amd64-bin mtools dosfstools shellcheck sway desktop-file-utils librsvg2-bin fonts-noto-core fontconfig python3 && sh ./scripts/build.sh"
+docker run --rm --privileged -v "${PWD}:/src" -w /src public.ecr.aws/docker/library/debian:trixie sh -c "sed -i 's/^Components: main$/Components: main contrib non-free-firmware/' /etc/apt/sources.list.d/debian.sources && apt-get update && apt-get install -y live-build debootstrap debian-archive-keyring xorriso squashfs-tools grub-pc-bin grub-efi-amd64-bin mtools dosfstools shellcheck sway desktop-file-utils librsvg2-bin fonts-noto-core fontconfig python3 && sh ./scripts/build.sh"
 ```
 
 The build directory needs a Linux filesystem. Docker Desktop's bind mount from NTFS may fail on Unix permissions and symlinks; for repeatable builds, clone the repository into a Debian VM or WSL Linux filesystem, or use the GitHub Actions workflow.
