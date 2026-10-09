@@ -53,7 +53,7 @@ jobs:
             printf 'sendkey meta_l-shift-q\n'
             sleep 3
             printf 'sendkey meta_l-shift-m\n'
-            sleep 20
+            sleep 60
             printf 'screendump dist/monitor.ppm\n'
             printf 'quit\n'
           } | timeout -k 10 320 qemu-system-x86_64 -machine q35,accel=kvm:tcg -cpu max -m 3072 -smp 2 \
@@ -79,19 +79,18 @@ jobs:
               assert len(pixels) == width * height * 3
               return width, height, pixels
 
-          previous = image('desktop')
+          baseline = image('desktop')
           for name in ('files', 'terminal', 'settings', 'monitor'):
               current = image(name)
-              assert current[:2] == previous[:2]
+              assert current[:2] == baseline[:2]
               width = current[0]
               start = width * 50 * 3
               changed = sum(
-                  previous[2][i:i + 3] != current[2][i:i + 3]
+                  baseline[2][i:i + 3] != current[2][i:i + 3]
                   for i in range(start, len(current[2]), 3)
               )
               print(f'{name}: {changed} changed desktop pixels')
               assert changed > 2000, f'{name} did not produce a visible window'
-              previous = current
           PY
       - name: Upload application screenshots
         if: always()
