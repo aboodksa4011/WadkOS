@@ -28,7 +28,7 @@ thunar-volman
 gvfs
 gvfs-backends
 udisks2
-gnome-system-monitor
+xfce4-taskmanager
 wdisplays
 python3
 python3-gi

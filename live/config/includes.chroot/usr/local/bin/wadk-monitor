@@ -1,2 +1,2 @@
 #!/bin/sh
-exec gnome-system-monitor "$@"
+exec xfce4-taskmanager "$@"
