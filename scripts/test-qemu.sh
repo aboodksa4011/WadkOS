@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 ISO="$ROOT/dist/WadkOS-Developer-Preview-0.1-amd64.iso"
 [ -f "$ISO" ] || { echo "Missing ISO: $ISO" >&2; exit 1; }
 command -v qemu-system-x86_64 >/dev/null || { echo 'Install qemu-system-x86.' >&2; exit 1; }

@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 BUILD="$ROOT/build"
 DIST="$ROOT/dist"
 ISO_NAME=WadkOS-Developer-Preview-0.1-amd64.iso

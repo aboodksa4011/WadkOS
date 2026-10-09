@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 INCLUDE="$ROOT/live/config/includes.chroot"
 
 fail() { echo "Prebuild check failed: $*" >&2; exit 1; }
