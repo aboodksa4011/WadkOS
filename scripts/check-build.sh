@@ -33,7 +33,7 @@ PY
               shellcheck -S warning "$file" || fail "ShellCheck: $file" ;; esac
 done
 sh -n "$INCLUDE/etc/skel/.profile" || fail 'Invalid login profile'
-sway -C -c "$INCLUDE/etc/sway/config" >/dev/null 2>&1 || fail 'Invalid Sway config'
+sway -C -c "$INCLUDE/etc/sway/config" || fail 'Invalid Sway config'
 fc-match -f '%{family}\n' 'Noto Sans Arabic' | grep -q 'Noto Sans Arabic' || fail 'Noto Sans Arabic is unavailable on build host'
 fc-match -f '%{family}\n' 'Noto Sans' | grep -q 'Noto Sans' || fail 'Noto Sans is unavailable on build host'
 [ -z "$(find "$ROOT" -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname '*.woff*' \) -print -quit)" ] || fail 'Font file embedded in source tree'
