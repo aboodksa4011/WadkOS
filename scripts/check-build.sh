@@ -12,6 +12,7 @@ for file in \
     "$ROOT/scripts/build.sh" "$ROOT/scripts/configure.sh" "$ROOT/scripts/check-build.sh" \
     "$ROOT/scripts/test-qemu.sh" "$ROOT/scripts/test-qemu-boot.sh" \
     "$ROOT/live/config/package-lists/wadkos.list.chroot" \
+    "$ROOT/live/config/bootloaders/grub-pc/config.cfg" \
     "$ROOT/live/config/hooks/live/010-wadkos.hook.chroot" \
     "$INCLUDE/etc/sway/config" "$INCLUDE/etc/xdg/waybar/config.jsonc" \
     "$INCLUDE/etc/skel/.profile" "$INCLUDE/usr/local/bin/wadk-session" \
@@ -61,6 +62,8 @@ generated = (inc / 'etc/locale.gen').read_text()
 assert 'ar_SA.UTF-8 UTF-8' in generated and 'en_US.UTF-8 UTF-8' in generated
 packages = (root / 'live/config/package-lists/wadkos.list.chroot').read_text()
 assert 'fonts-noto-core' in packages and 'linux-image-amd64' in packages
+grub = (root / 'live/config/bootloaders/grub-pc/config.cfg').read_text()
+assert 'set default=0' in grub and 'set timeout=5' in grub
 for entry in (inc / 'usr/share/applications').glob('wadk-*.desktop'):
     command = next(line[5:].split()[0] for line in entry.read_text().splitlines() if line.startswith('Exec='))
     assert (inc / 'usr/local/bin' / command).is_file(), (entry, command)
