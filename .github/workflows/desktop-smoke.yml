@@ -66,6 +66,33 @@ jobs:
           test "$status" -eq 0
           for name in desktop files terminal settings monitor; do test -s "dist/$name.ppm"; done
           grep -q 'Linux version' dist/desktop-boot.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          def image(name):
+              raw = (Path('dist') / f'{name}.ppm').read_bytes()
+              match = re.match(rb'P6\s+(\d+)\s+(\d+)\s+255\s', raw)
+              assert match, f'Invalid screenshot: {name}'
+              width, height = map(int, match.groups())
+              pixels = raw[match.end():]
+              assert len(pixels) == width * height * 3
+              return width, height, pixels
+
+          previous = image('desktop')
+          for name in ('files', 'terminal', 'settings', 'monitor'):
+              current = image(name)
+              assert current[:2] == previous[:2]
+              width = current[0]
+              start = width * 50 * 3
+              changed = sum(
+                  previous[2][i:i + 3] != current[2][i:i + 3]
+                  for i in range(start, len(current[2]), 3)
+              )
+              print(f'{name}: {changed} changed desktop pixels')
+              assert changed > 2000, f'{name} did not produce a visible window'
+              previous = current
+          PY
       - name: Upload application screenshots
         if: always()
         uses: actions/upload-artifact@v4

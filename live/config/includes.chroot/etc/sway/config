@@ -11,7 +11,7 @@ client.focused #1e83ad #1e83ad #ffffff #1e83ad #1e83ad
 client.unfocused #1b2734 #1b2734 #cad7df #1b2734 #1b2734
 
 input type:keyboard {
-    xkb_layout ara,us
+    xkb_layout us,ara
     xkb_options grp:alt_shift_toggle
 }
 
